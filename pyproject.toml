@@ -4,4 +4,64 @@ version = "0.1.0"
 description = "Sistema de Controle de Estoque"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-dependencies = []
+dependencies = [
+    "django>=5.2,<5.3",
+    "django-environ>=0.13.0",
+]
+
+[dependency-groups]
+dev = [
+    "django-stubs>=6.0.3",
+    "mypy>=1.20.2",
+    "pre-commit>=4.6.0",
+    "ruff>=0.15.12",
+]
+
+[tool.ruff]
+line-length = 120
+exclude = [
+    "*/migrations/*",
+    "*/venv/*",
+    "development.py",
+    "production.py",
+    "__pycache__",
+]
+
+[tool.ruff.lint]
+# Seleciona os conjuntos de regras de linting a serem aplicados:
+# E/W: Erros e Warnings do pycodestyle (equivalente ao Flake8)
+# F: Erros do Pyflakes (erros lógicos)
+# I: Regras de ordenação de imports (equivalente ao isort)
+# PL: Regras do Pylint (regras de convenção e possíveis bugs)
+select = ["E", "W", "F", "I", "PL"]
+# Regras a serem ignoradas:
+ignore = [
+    "I001",  # Imports não em ordem alfabética (isort)
+    "PLC0415",  # Imports fora do topo do módulo
+    "PLR0913",  # Muitos parâmetros em função
+]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.mypy]
+# Define a versão do Python para validação de types
+python_version = "3.12"
+# Avisa quando uma função retorna tipo "Any" (genérico/desconhecido)
+warn_return_any = true
+# Avisa se há configurações no pyproject.toml que não estão sendo usadas
+warn_unused_configs = true
+# Permite funções sem type hints (false = não obriga type hints em todas as funções)
+disallow_untyped_defs = false
+# Ignora imports de pacotes de terceiros que não têm type hints
+ignore_missing_imports = true
+# Ativa o plugin Django para melhor suporte a validação de types
+plugins = ["mypy_django_plugin.main"]
+# Exclui pastas/arquivos da validação (migrations são geradas automaticamente)
+exclude = [
+    "migrations/",
+]
+mypy_path = "app"
+
+[tool.django-stubs]
+django_settings_module = "sce.settings.base"
