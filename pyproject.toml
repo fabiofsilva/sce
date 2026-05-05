@@ -39,13 +39,22 @@ exclude = [
 # F: Erros do Pyflakes (erros lógicos)
 # I: Regras de ordenação de imports (equivalente ao isort)
 # PL: Regras do Pylint (regras de convenção e possíveis bugs)
-select = ["E", "W", "F", "I", "PL"]
+# Q: Regras de consistência de aspas (flake8-quotes)
+select = ["E", "W", "F", "I", "PL", "Q"]
 # Regras a serem ignoradas:
 ignore = [
     "I001",  # Imports não em ordem alfabética (isort)
     "PLC0415",  # Imports fora do topo do módulo
     "PLR0913",  # Muitos parâmetros em função
 ]
+
+[tool.ruff.lint.flake8-quotes]
+# Regra Q000: Aspas simples para strings de uma linha
+inline-quotes = "single"
+# Regra Q001: Aspas duplas para strings de múltiplas linhas
+multiline-quotes = "double"
+# Aspas duplas para docstrings (Padrão PEP 257)
+docstring-quotes = "double"
 
 [tool.ruff.format]
 quote-style = "single"
