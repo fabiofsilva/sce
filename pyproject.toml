@@ -25,6 +25,8 @@ dev = [
 
 [tool.ruff]
 line-length = 120
+# Raiz do PYTHONPATH do Django — faz o isort (I001) reconhecer core, produtos etc. como first-party
+src = ["app"]
 exclude = [
     "*/migrations/*",
     "*/venv/*",
@@ -43,7 +45,6 @@ exclude = [
 select = ["E", "W", "F", "I", "PL", "Q"]
 # Regras a serem ignoradas:
 ignore = [
-    "I001",  # Imports não em ordem alfabética (isort)
     "PLC0415",  # Imports fora do topo do módulo
     "PLR0913",  # Muitos parâmetros em função
 ]
