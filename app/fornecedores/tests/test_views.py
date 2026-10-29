@@ -32,6 +32,32 @@ class FornecedorViewSetTest(APITestCase):
         fornecedor = Fornecedor.objects.get(id=response.data['id'])
         self.assertEqual(fornecedor.tenant, self.tenant)
 
+    def test_cria_ignora_tenant_enviado_no_body(self):
+        outro_tenant = baker.make(Tenant)
+        dados = {'name': 'Ceasa', 'tenant': outro_tenant.id}
+        response = self.client.post('/api/fornecedores/', dados)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertNotIn('tenant', response.data)
+        fornecedor = Fornecedor.objects.get(id=response.data['id'])
+        self.assertEqual(fornecedor.tenant, self.tenant)
+
+    def test_atualiza_ignora_tenant_enviado_no_body(self):
+        outro_tenant = baker.make(Tenant)
+        fornecedor = baker.make('fornecedores.Fornecedor', tenant=self.tenant, name='Ceasa')
+        dados = {'name': 'Ceasa SP', 'tenant': outro_tenant.id}
+        response = self.client.put(f'/api/fornecedores/{fornecedor.id}/', dados)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        fornecedor.refresh_from_db()
+        self.assertEqual(fornecedor.tenant, self.tenant)
+
+    def test_atualiza_parcialmente_ignora_tenant_enviado_no_body(self):
+        outro_tenant = baker.make(Tenant)
+        fornecedor = baker.make('fornecedores.Fornecedor', tenant=self.tenant, name='Ceasa')
+        response = self.client.patch(f'/api/fornecedores/{fornecedor.id}/', {'tenant': outro_tenant.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        fornecedor.refresh_from_db()
+        self.assertEqual(fornecedor.tenant, self.tenant)
+
     def test_acesso_anonimo_retorna_401(self):
         self.client.force_authenticate(user=None)
         response = self.client.get('/api/fornecedores/')
@@ -67,7 +93,7 @@ class FornecedorViewSetTest(APITestCase):
         baker.make('fornecedores.Fornecedor', tenant=self.tenant, name='Ceasa')
         response = self.client.post('/api/fornecedores/', {'name': 'Ceasa'})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn('name', response.data)
+        self.assertIn('non_field_errors', response.data)
 
     def test_nome_duplicado_em_tenant_diferente_e_permitido(self):
         baker.make('fornecedores.Fornecedor', tenant=baker.make(Tenant), name='Ceasa')

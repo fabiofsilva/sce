@@ -9,3 +9,4 @@ class FornecedorAdmin(admin.ModelAdmin):
     list_filter = ['is_active', 'tenant']
     search_fields = ['name', 'email', 'phone']
     readonly_fields = ['created_at']
+    ordering = ['tenant', 'name']

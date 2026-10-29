@@ -5,9 +5,5 @@ from .serializers import FornecedorSerializer
 
 
 class FornecedorViewSet(TenantScopedViewSet):
-    queryset = Fornecedor.objects.all()
+    queryset = Fornecedor.objects.all().order_by('tenant_id', 'name')
     serializer_class = FornecedorSerializer
-
-    def get_serializer_context(self):
-        return super().get_serializer_context()
-

@@ -21,7 +21,7 @@ class _UserSerializer(serializers.ModelSerializer):
 
 
 class _UserTestViewSet(TenantScopedViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('id')
     serializer_class = _UserSerializer
 
 

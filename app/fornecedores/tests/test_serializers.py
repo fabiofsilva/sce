@@ -42,7 +42,7 @@ class FornecedorSerializerTest(TestCase):
         baker.make('fornecedores.Fornecedor', tenant=self.tenant, name='Ceasa')
         serializer = self._serializer({'name': 'Ceasa'})
         self.assertFalse(serializer.is_valid())
-        self.assertIn('name', serializer.errors)
+        self.assertIn('non_field_errors', serializer.errors)
 
     def test_nome_duplicado_em_tenant_diferente_e_valido(self):
         baker.make('fornecedores.Fornecedor', tenant=baker.make('tenants.Tenant'), name='Ceasa')

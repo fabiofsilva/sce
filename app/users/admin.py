@@ -12,7 +12,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = ['email', 'first_name', 'last_name', 'tenant', 'is_active', 'is_staff']
     list_filter = ['is_active', 'is_staff', 'tenant']
     search_fields = ['email', 'first_name', 'last_name']
-    ordering = ['email']
+    ordering = ['tenant', 'email']
     filter_horizontal = ['groups', 'user_permissions']
 
     fieldsets = (
